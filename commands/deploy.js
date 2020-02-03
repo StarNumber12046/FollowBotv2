@@ -18,7 +18,7 @@ module.exports = {
 		await generateEmbed("Updating code");
 
 
-		exec(`git fetch origin && git reset --hard origin/production`) // Pull new code from GitHub
+		exec(`git fetch origin && git reset --hard origin/master`) // Pull new code from GitHub
 			.then(async () => {
 				await generateEmbed("Removing old node modules");
 				return exec("rm -rf node_modules/"); // Delete old node_modules
