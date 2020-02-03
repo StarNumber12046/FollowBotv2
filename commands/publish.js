@@ -64,11 +64,12 @@ module.exports = {
 			if (fetchedMsg.attachments.first()) fetchedMsg.attachments.forEach(attachment => {
 				attachments.push(attachment.url);
 			});
-			let msgEmbed = fetchedMsg.embeds.filter(e => e.type === "rich");
+			let msgEmbed = fetchedMsg.embeds;
 			let embedlist = [];
 			if (msgEmbed.length > 0) {
 				if (msgEmbed.length < 10) msgEmbed.forEach(e => {
-					embedlist.push(new Discord.RichEmbed(e));
+					if (e.type === "rich") embedlist.push(new Discord.RichEmbed(e))
+					else if (e.type === "image") attachments.push(e.url)
 				});
 				else return message.channel.send(`<:${emoji.x}> Due to Discord embed limitations, messages with over 9 embeds cannot be published.`);
 			}
