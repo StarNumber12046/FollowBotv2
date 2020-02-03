@@ -6,7 +6,7 @@ module.exports = {
 		permission: 0,
 		usage: "deploy",
 		description: "Updates the bot",
-		enabled: false,
+		enabled: true,
 		hidden: false,
 		permissions: ["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS", "USE_EXTERNAL_EMOJIS"]
 	},
