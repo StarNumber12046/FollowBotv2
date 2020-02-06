@@ -27,37 +27,41 @@ module.exports = {
 			return message.channel.send(`<:${emoji.x}> There was an error creating an invite to your announcement channel.`);
 		});
 
-		if (origin.published.includes(args[1])) return message.channel.send(`<:${emoji.x}> This message has already been published.`);
+		//if (origin.published.includes(args[1])) return message.channel.send(`<:${emoji.x}> This message has already been published.`);
 		client.channels.get(origin.channelId).fetchMessage(args[1]).then(async fetchedMsg => {
 			let textToSend = fetchedMsg.content;
 			// eslint-disable-next-line no-useless-escape
 			textToSend.split("@everyone").join("@\everyone");
-			let splitText = textToSend.split(" ");
 
 			async function sanitize(input) {
-				let splitText = input;
-				for (let a = 0; a < splitText.length; a++) {
-					let part = splitText[a];
-					let userMatches = part.match(/^<@!?(\d+)>$/);
-					let channelMatches = part.match(/^<#!?(\d+)>$/);
-					let roleMatches = part.match(/^<@&(\d+)>$/);
-					if (userMatches) {
-						let uid = userMatches[1];
+				let userMatches = input.match(/<@!?(\d+)>/g) || [];
+				let channelMatches = input.match(/<#!?(\d+)>/g) || [];
+				let roleMatches = input.match(/<@&(\d+)>/g) || [];
+				let list = userMatches.concat(channelMatches).concat(roleMatches);
+				let text = input;
+				for (let item of list) {
+					let uid;
+					let cid;
+					let rid;
+					await item.match(/^<@!?(\d+)>$/) ? uid = item.match(/^<@!?(\d+)>$/)[1] : uid = null;
+					await item.match(/^<#(\d+)>$/) ? cid = item.match(/^<#(\d+)>$/)[1] : cid = null;
+					await item.match(/^<@&(\d+)>$/) ? rid = item.match(/^<@&(\d+)>$/)[1] : rid = null;
+
+					if (uid) {
 						let user = await fetchUser(uid, client);
-						user ? splitText[a] = `@${user.username}` : splitText[a] = `@${uid}`;
-					} else if (channelMatches) {
-						let cid = channelMatches[1];
+						if (user) text = text.replace(item, `@${user.username}`);
+						else text = text.replace(item, `@${uid}`);
+					} else if (cid) {
 						let channel = `<#${cid}>`;
 						if (client.channels.get(cid)) channel = `#${client.channels.get(cid).name}`;
-						splitText[a] = channel;
-					} else if (roleMatches) {
-						let rid = roleMatches[1];
+						text = text.replace(item, channel);
+					} else if (rid) {
 						let role = `<@&${rid}>`;
 						if (client.guilds.get(origin.guildId).roles.get(rid)) role = `@${client.guilds.get(origin.guildId).roles.get(rid).name}`;
-						splitText[a] = role;
+						text = text.replace(item, role);
 					}
 				}
-				return splitText.join(" ");
+				return text;
 			}
 
 			let attachments = [];
@@ -73,10 +77,9 @@ module.exports = {
 				});
 				else return message.channel.send(`<:${emoji.x}> Due to Discord embed limitations, messages with over 9 embeds cannot be published.`);
 			}
-			let sanitizedText = await sanitize(splitText);
+			let sanitizedText = await sanitize(textToSend);
 			embedlist.push({
 				description: `You can join this server by using this invite: https://discord.gg/${invite}`,
-				color: 4884200,
 				author: {
 					name: `This message was published by ${guild.name}.`,
 					icon_url: guild.iconURL.replace(".jpg", ".png")
