@@ -32,15 +32,15 @@ module.exports = async (Discord, client, message) => {
 			let commandText = message.content.split(" ")[0].toLowerCase().split(prefix)[1]; //Input command
 			if (commandText === commandName || (command.controls.aliases && command.controls.aliases.includes(commandText))) { //Check if command matches
 				if (permission > command.controls.permission) {
-					core.commandLog(`🚫 ${message.author.tag} (\`${message.author.id}\`) attempted to run command \`${commandName}\` in the **${message.channel.name}** (\`${message.channel.id}\`) channel of **${message.guild.name}** (\`${message.guild.id}\`) but did not have permission to do so.\nFull Content: \`${message.content}\``, client);
+					core.commandLog(`🚫 ${message.author.tag} (\`${message.author.id}\`) attempted to run command \`${commandName}\` in the **${message.channel.name}** (\`${message.channel.id}\`) channel of **${message.guild.name}** (\`${message.guild.id}\`) but did not have permission to do so.`, {embeds:[{description: message.content}]});
 					return message.react("🚫");
 					//message.channel.send(":rotating_light: The bot is currently experiencing issues, and command usage has been locked.");
 				}
 				if (command.controls.enabled === false) {
-					core.commandLog(`🚫 ${message.author.tag} (\`${message.author.id}\`) attempted to run command \`${commandName}\` in the **${message.channel.name}** (\`${message.channel.id}\`) channel of **${message.guild.name}** (\`${message.guild.id}\`) but the command is disabled.\nFull Content: \`${message.content}\``, client);
+					core.commandLog(`🚫 ${message.author.tag} (\`${message.author.id}\`) attempted to run command \`${commandName}\` in the **${message.channel.name}** (\`${message.channel.id}\`) channel of **${message.guild.name}** (\`${message.guild.id}\`) but the command is disabled.`, {embeds:[{description: message.content}]});
 					return message.channel.send("This command is currently disabled globally.");
 				}
-				core.commandLog(`:wrench: ${message.author.tag} (\`${message.author.id}\`) ran command \`${commandName}\` in the **${message.channel.name}** (\`${message.channel.id}\`) channel of **${message.guild.name}** (\`${message.guild.id}\`).\nFull Content: \`${message.content}\``, client);
+				core.commandLog(`:wrench: ${message.author.tag} (\`${message.author.id}\`) ran command \`${commandName}\` in the **${message.channel.name}** (\`${message.channel.id}\`) channel of **${message.guild.name}** (\`${message.guild.id}\`)`, {embeds:[{description: message.content}]});
 
 				if (command.controls.permissions) {
 					let channelPermissions = message.channel.memberPermissions(client.user.id);

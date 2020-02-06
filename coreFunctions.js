@@ -7,9 +7,13 @@ let models = require("./utils/schemas");
  * Send a message from a webhook
  * @param {Object} cfg - Where to send the webhook; contains webhook token and id
  * @param {module:"discord.js".RichEmbed} input - What to send
+ * @param {module:"discord.js".RichEmbed} embed - embed to send
  */
-function sendWebhook (cfg, input) {
-	(new Discord.WebhookClient(cfg.id, cfg.token)).send(input).then(hookMessage => {
+function sendWebhook (cfg, input, embed) {
+	if (embed) (new Discord.WebhookClient(cfg.id, cfg.token)).send(input, embed).then(hookMessage => {
+		return `https://discordapp.com/channels/${config.main_guild}/${hookMessage.channel_id}/${hookMessage.id}`;
+	});
+	else (new Discord.WebhookClient(cfg.id, cfg.token)).send(input).then(hookMessage => {
 		return `https://discordapp.com/channels/${config.main_guild}/${hookMessage.channel_id}/${hookMessage.id}`;
 	});
 }
@@ -35,11 +39,8 @@ module.exports = {
 	coreLog: (input) => {
 		return sendWebhook(config.log_hooks.core, input);
 	},
-	commandLog: (input) => {
-		return sendWebhook(config.log_hooks.commands, input);
-	},
-	publishLog: (input) => {
-		return sendWebhook(config.log_hooks.publish, input);
+	commandLog: (input, embed) => {
+		return sendWebhook(config.log_hooks.commands, input, embed);
 	},
 	permLevelToRole: (permLevel) => {
 		switch (permLevel) {
