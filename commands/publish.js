@@ -27,7 +27,7 @@ module.exports = {
 			return message.channel.send(`<:${emoji.x}> There was an error creating an invite to your announcement channel.`);
 		});
 
-		//if (origin.published.includes(args[1])) return message.channel.send(`<:${emoji.x}> This message has already been published.`);
+		if (origin.published.includes(args[1])) return message.channel.send(`<:${emoji.x}> This message has already been published.`);
 		client.channels.get(origin.channelId).fetchMessage(args[1]).then(async fetchedMsg => {
 			let textToSend = fetchedMsg.content;
 			// eslint-disable-next-line no-useless-escape
@@ -102,9 +102,11 @@ module.exports = {
 				let hook = new Discord.WebhookClient(subChannel.webhook.id, subChannel.webhook.token);
 				await hook.send(sanitizedText, {disableEveryone: true,
 					embeds: embedlist,
-					files: attachments
+					files: attachments,
+					avatarURL: guild.iconURL,
+					username: `${guild.name} • #${channel.name}`
 				}).catch(async err => {
-					client.channels.get(subChannel.subscribedChannelId).send(`This channel's subscription to **${guild.name} #${channel.name}** has been removed due to the webhook in this channel being removed. You can re-follow this channel by using \`-follow ${origin.followCode}\``);
+					if (client.channels.get(subChannel.subscribedChannelId)) client.channels.get(subChannel.subscribedChannelId).send(`This channel's subscription to **${guild.name} #${channel.name}** has been removed due to the webhook in this channel being removed. You can re-follow this channel by using \`-follow ${origin.followCode}\``);
 					await dbDeleteOne("Subscription", {followedChannelId: origin.channelId, subscribedChannelId: subChannel.subscribedChannelId});
 					return;
 				});
