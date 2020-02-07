@@ -82,7 +82,7 @@ module.exports = {
 				description: `You can join this server by using this invite: https://discord.gg/${invite}`,
 				author: {
 					name: `This message was published by ${guild.name}.`,
-					icon_url: guild.iconURL.replace(".jpg", ".png")
+					icon_url: guild.iconURL ? guild.iconURL.replace(".jpg", ".png") : null
 				},
 				footer: {
 					text: "FollowBot is not responsible for any text sent through this publishing service."
@@ -103,7 +103,7 @@ module.exports = {
 				await hook.send(sanitizedText, {disableEveryone: true,
 					embeds: embedlist,
 					files: attachments,
-					avatarURL: guild.iconURL,
+					avatarURL: guild.iconURL ? guild.iconURL.replace(".jpg", ".png") : null,
 					username: `${guild.name} • #${channel.name}`
 				}).catch(async err => {
 					if (client.channels.get(subChannel.subscribedChannelId)) client.channels.get(subChannel.subscribedChannelId).send(`This channel's subscription to **${guild.name} #${channel.name}** has been removed due to the webhook in this channel being removed. You can re-follow this channel by using \`-follow ${origin.followCode}\``);

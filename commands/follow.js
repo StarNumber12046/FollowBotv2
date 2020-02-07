@@ -20,7 +20,7 @@ module.exports = {
 		if (!client.guilds.get(origin.guildId) || !client.channels.get(origin.channelId)) return message.channel.send(`<:${emoji.x}> The origin announcement channel could not be fetched - please try again later.`);
 		let guild = client.guilds.get(origin.guildId);
 		let channel = client.channels.get(origin.channelId);
-		message.channel.createWebhook(`${guild.name} • #${channel.name}`, guild.iconURL.replace("jpg", "png")).then(async webhook => {
+		message.channel.createWebhook(`${guild.name} • #${channel.name}`, guild.iconURL ? guild.iconURL.replace(".jpg", ".png") : null).then(async webhook => {
 			await new Subscription({
 				subscribedGuildId: message.guild.id,
 				subscribedChannelId: message.channel.id,
