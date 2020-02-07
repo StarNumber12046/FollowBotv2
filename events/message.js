@@ -16,7 +16,7 @@ module.exports = async (Discord, client, message) => {
 	let prefix = config.prefix;
 
 	let possiblementions = [`<@${client.user.id}> help`, `<@${client.user.id}>help`, `<@!${client.user.id}> help`, `<@!${client.user.id}>help`, `<@${client.user.id}> prefix`, `<@${client.user.id}>prefix`, `<@!${client.user.id}> prefix`, `<@!${client.user.id}>prefix`, `<@${client.user.id}> ping`, `<@${client.user.id}>ping`, `<@!${client.user.id}> ping`, `<@!${client.user.id}>ping`];
-	if (possiblementions.includes(message.content.toLowerCase())) return message.reply(`Hi there! My prefix is ${Discord.escapeMarkdown(prefix)}\nYou can read more about my commands at https://suggester.gitbook.io/`);
+	if (possiblementions.includes(message.content.toLowerCase())) return message.reply(`Hi there! My prefix is ${Discord.escapeMarkdown(prefix)}\nUse \`-help\` for more information about my commands!`);
 
 	if (permission <= 1 && message.content.toLowerCase().startsWith("followbot:")) prefix = "followbot:";
 	if (permission <= 1 && message.content.toLowerCase().startsWith(`${client.user.id}:`)) prefix = `${client.user.id}:`;
