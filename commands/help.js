@@ -27,7 +27,7 @@ module.exports = {
 
 		let commandName = args[0].toLowerCase();
 
-		const command = client.commands.get(commandName) || client.commands.find(c=>c.controls.aliases && c.controls.aliases.includes(commandName))
+		const command = client.commands.get(commandName) || client.commands.find(c=>c.controls.aliases && c.controls.aliases.includes(commandName));
 
 		if(!command)
 			return message.channel.send(`<:${emoji.x}> Unknown command or alias`);

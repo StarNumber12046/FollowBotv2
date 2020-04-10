@@ -2,7 +2,7 @@
 const core = require("../coreFunctions.js");
 const { dbQuery, dbModifyId, dbDeleteOne, dbModify } = require("../coreFunctions");
 const { emoji } = require("../config.json");
-const config = require("../config.json")
+const config = require("../config.json");
 const permissionNames = require("../utils/permissions.json");
 module.exports = async (Discord, client, message) => {
 	if (message.channel.type !== "text") {
@@ -25,12 +25,12 @@ module.exports = async (Discord, client, message) => {
 	//Only commands after this point
 	//Check if message is a command
 
-	let args = message.content.split(" ").splice(1)
+	let args = message.content.split(" ").splice(1);
 
 	const commandName = message.content.split(" ")[0].toLowerCase().split(prefix)[1];
-	const command = client.commands.get(commandName) || client.commands.find(c=>c.controls.aliases && c.controls.aliases.includes(commandName))
+	const command = client.commands.get(commandName) || client.commands.find(c=>c.controls.aliases && c.controls.aliases.includes(commandName));
 
-	if(!command) return
+	if(!command) return;
 
 	if (permission > command.controls.permission) {
 		core.commandLog(`🚫 ${message.author.tag} (\`${message.author.id}\`) attempted to run command \`${commandName}\` in the **${message.channel.name}** (\`${message.channel.id}\`) channel of **${message.guild.name}** (\`${message.guild.id}\`) but did not have permission to do so.`, {embeds:[{description: message.content}]});
@@ -74,6 +74,6 @@ module.exports = async (Discord, client, message) => {
 		message.channel.send(`<:${emoji.x}> Something went wrong with that command, please try again later.`);
 		console.log(err);
 		core.errorLog(err, "Command Handler", `Message Content: ${message.content}`);
-	};
+	}
 
 };

@@ -65,12 +65,12 @@ const commandFiles = fs.readdirSync("./commands").filter(file => file.endsWith("
 
 commandFiles.forEach(file => {
 
-  const filename = `${process.cwd()}/commands/${file}`;
-  const command = require(filename);
-  const commandName = file.split(".")[0];
-  command.name = commandName;
-  client.commands.set(commandName, command);
-})
+	const filename = `${process.cwd()}/commands/${file}`;
+	const command = require(filename);
+	const commandName = file.split(".")[0];
+	command.name = commandName;
+	client.commands.set(commandName, command);
+});
 
 
 // core.errorLog(err, type, footer)
