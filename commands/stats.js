@@ -14,7 +14,7 @@ module.exports = {
 	do: async (message, client, args, Discord) => {
 		if (!args[0]) return message.channel.send("You must specify a follow code!");
 		let origin = await dbQueryNoNew("Origins", {followCode: args[0], guildId: message.guild.id});
-		if (!origin) return message.channel.send("You must specify a valid follow code!")
+		if (!origin) return message.channel.send("You must specify a valid follow code!");
 		if (!client.channels.get(origin.channelId)) return message.channel.send("The announcement channel could not be fetched!");
 		let subbedChannels = await dbQueryAll("Subscription", {followedChannelId: origin.channelId});
 		let statEmbed = new Discord.RichEmbed()

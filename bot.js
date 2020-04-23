@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 if (process.env.PROJECT_NAME && process.env.PORT) {
 	const http = require("http");
 	const express = require("express");
@@ -56,6 +58,20 @@ client.login(process.env.TOKEN)
 	.catch((err) => {
 		throw new Error(err);
 	});
+
+client.commands = new Discord.Collection();
+
+const commandFiles = fs.readdirSync("./commands").filter(file => file.endsWith(".js"));
+
+commandFiles.forEach(file => {
+
+	const filename = `${process.cwd()}/commands/${file}`;
+	const command = require(filename);
+	const commandName = file.split(".")[0];
+	command.name = commandName;
+	client.commands.set(commandName, command);
+});
+
 
 // core.errorLog(err, type, footer)
 client.on("error", (err) => {
