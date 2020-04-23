@@ -24,7 +24,7 @@ module.exports = {
 			.addField("Guild Count", client.guilds.size)
 			.addField("Uptime", humanizeDuration(client.uptime))
 			.addField("Client Ping", client.ping + " ms")
-			.setFooter(`${client.user.tag} v1.0.0-dev`, client.user.displayAvatarURL)
+			.setFooter(`${client.user.tag} v1.0.1`, client.user.displayAvatarURL)
 			.setThumbnail(client.user.displayAvatarURL)
 			.setColor("BLUE");
 		message.reply("👋 Hi there! Here's some info:", embed).then((sent) => {
