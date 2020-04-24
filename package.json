@@ -9,16 +9,16 @@
     "node": "12.14.1"
   },
   "dependencies": {
-    "chalk": "^3.0.0",
-    "discord.js": "^11.5.1",
+    "chalk": "^4.0.0",
+    "discord.js": "^12.2.0",
     "eslint": "^6.8.0",
-    "express": "^4.16.4",
-    "humanize-duration": "^3.21.0",
-    "mongoose": "^5.8.2",
+    "express": "^4.17.1",
+    "humanize-duration": "^3.22.0",
+    "mongoose": "^5.9.10",
     "ms": "^2.1.2",
     "mongoose-sequence": "^5.2.2",
     "valid-url": "1.0.9",
-    "request": "^2.88.0",
+    "request": "^2.88.2",
     "dotenv": "^8.2.0"
   }
 }

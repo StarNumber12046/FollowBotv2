@@ -16,7 +16,7 @@ if (process.env.PROJECT_NAME && process.env.PORT) {
 const Discord = require("discord.js");
 const fs = require("fs");
 
-const client = new Discord.Client({ disableEveryone: true });
+const client = new Discord.Client({ disableMentions: "everyone" });
 const core = require("./coreFunctions.js");
 const { connect, connection } = require("mongoose");
 const autoIncrement = require("mongoose-sequence");

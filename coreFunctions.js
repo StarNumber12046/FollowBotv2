@@ -6,8 +6,8 @@ let models = require("./utils/schemas");
 /**
  * Send a message from a webhook
  * @param {Object} cfg - Where to send the webhook; contains webhook token and id
- * @param {module:"discord.js".RichEmbed} input - What to send
- * @param {module:"discord.js".RichEmbed} embed - embed to send
+ * @param {module:"discord.js".MessageEmbed} input - What to send
+ * @param {module:"discord.js".MessageEmbed} embed - embed to send
  */
 function sendWebhook (cfg, input, embed) {
 	if (embed) (new Discord.WebhookClient(cfg.id, cfg.token)).send(input, embed).then(hookMessage => {
@@ -98,7 +98,7 @@ module.exports = {
 			console.error((require("chalk")).red(err.error));
 			errorText = err.error;
 		}
-		let embed = new Discord.RichEmbed()
+		let embed = new Discord.MessageEmbed()
 			.setAuthor(type)
 			.setTitle(err.message.substring(0, 256))
 			.setDescription(`\`\`\`js\n${(errorText).length >= 1000 ? (errorText).substring(0, 1000) + " content too long..." : err.stack}\`\`\``)
@@ -120,16 +120,16 @@ module.exports = {
 		if (!id) return null;
 
 		function fetchUnknownUser (uid) {
-			return client.fetchUser(uid, true)
+			return client.users.fetch(uid, true)
 				.then(() => {
-					return client.users.get(uid);
+					return client.users.cache.get(uid);
 				})
 				.catch(() => {
 					return null;
 				});
 		}
 
-		return client.users.get(id)
+		return client.users.cache.get(id)
 			|| fetchUnknownUser(id)
 			|| null;
 	},

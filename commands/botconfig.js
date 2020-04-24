@@ -15,7 +15,7 @@ module.exports = {
 		}
 		switch (args[0]) {
 		case "game": {
-			let gameEmbed = new Discord.RichEmbed()
+			let gameEmbed = new Discord.MessageEmbed()
 				.setColor(colors.default);
 			let activity;
 			let type;
@@ -62,7 +62,7 @@ module.exports = {
 			if (!args[1]) {
 				return message.channel.send("Invalid parameters!");
 			} else {
-				let statusEmbed = new Discord.RichEmbed()
+				let statusEmbed = new Discord.MessageEmbed()
 					.setColor(colors.default);
 				let status;
 				switch (args[1].toLowerCase()) {
@@ -102,7 +102,7 @@ module.exports = {
 			if (!args[1]) {
 				return message.channel.send("Invalid parameters!");
 			} else {
-				let usernameEmbed = new Discord.RichEmbed()
+				let usernameEmbed = new Discord.MessageEmbed()
 					.setDescription(args.splice(1).join(" "))
 					.setColor(colors.default);
 				await client.user.setUsername(args.splice(1).join(" "));
@@ -114,7 +114,7 @@ module.exports = {
 			if (!args[1]) {
 				return message.channel.send("Invalid parameters!");
 			} else {
-				let nickEmbed = new Discord.RichEmbed()
+				let nickEmbed = new Discord.MessageEmbed()
 					.setDescription(args.splice(1).join(" "))
 					.setColor(colors.default);
 				await message.guild.me.setNickname(args.splice(1).join(" "));
@@ -128,8 +128,8 @@ module.exports = {
 			if (!args[0]) {
 				return message.channel.send("Invalid parameters!");
 			} else {
-				let avatarEmbed = new Discord.RichEmbed()
-					.setImage(client.user.displayAvatarURL)
+				let avatarEmbed = new Discord.MessageEmbed()
+					.setImage(client.user.displayAvatarURL())
 					.setColor(colors.default);
 				await client.user.setAvatar(args[1]);
 				return message.channel.send("👤 Avatar set!", avatarEmbed);

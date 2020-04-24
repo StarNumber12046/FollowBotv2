@@ -4,6 +4,7 @@ const { dbQuery, dbModifyId, dbDeleteOne, dbModify } = require("../coreFunctions
 const { emoji } = require("../config.json");
 const config = require("../config.json");
 const permissionNames = require("../utils/permissions.json");
+
 module.exports = async (Discord, client, message) => {
 	if (message.channel.type !== "text") {
 		if (message.channel.type === "dm" && client.user.id !== message.author.id) return core.coreLog(":e_mail: **" + message.author.tag + "** (" + message.author.id + ") sent a DM to the bot:\n" + message.content, client);
@@ -13,24 +14,26 @@ module.exports = async (Discord, client, message) => {
 
 	let permission = await core.checkPermissions(message.member, client);
 
-	let prefix = config.prefix;
+	let prefix;
 
-	let possiblementions = [`<@${client.user.id}> help`, `<@${client.user.id}>help`, `<@!${client.user.id}> help`, `<@!${client.user.id}>help`, `<@${client.user.id}> prefix`, `<@${client.user.id}>prefix`, `<@!${client.user.id}> prefix`, `<@!${client.user.id}>prefix`, `<@${client.user.id}> ping`, `<@${client.user.id}>ping`, `<@!${client.user.id}> ping`, `<@!${client.user.id}>ping`];
-	if (possiblementions.includes(message.content.toLowerCase())) return message.reply(`Hi there! My prefix is ${Discord.escapeMarkdown(prefix)}\nUse \`-help\` for more information about my commands!`);
+	const prefixes = [config.prefix, `<@!${client.user.id}>`, `<@${client.user.id}>`];
 
-	if (permission <= 1 && message.content.toLowerCase().startsWith("followbot:")) prefix = "followbot:";
-	if (permission <= 1 && message.content.toLowerCase().startsWith(`${client.user.id}:`)) prefix = `${client.user.id}:`;
-	if (!message.content.toLowerCase().startsWith(prefix)) return;
+	if(permission <= 1) prefixes.push("followbot:", client.user.id);
 
-	//Only commands after this point
-	//Check if message is a command
+	for(let thisPrefix of prefixes) {
+		if(message.content.startsWith(thisPrefix)) prefix = thisPrefix;
+	}
 
-	let args = message.content.split(" ").splice(1);
+	if (!prefix || !message.content.startsWith(prefix)) return;
 
-	const commandName = message.content.split(" ")[0].toLowerCase().split(prefix)[1];
-	const command = client.commands.get(commandName) || client.commands.find(c=>c.controls.aliases && c.controls.aliases.includes(commandName));
+	let args = message.content.slice(prefix.length).trim().split(/ +/g);
 
-	if(!command) return;
+	if(args.length === 0) return;
+
+	const commandName = args.shift().toLowerCase();
+
+	const command = client.commands.get(commandName) || client.commands.find(c => c.controls.aliases && c.controls.aliases.includes(commandName));
+	if (!command) return;
 
 	if (permission > command.controls.permission) {
 		core.commandLog(`🚫 ${message.author.tag} (\`${message.author.id}\`) attempted to run command \`${commandName}\` in the **${message.channel.name}** (\`${message.channel.id}\`) channel of **${message.guild.name}** (\`${message.guild.id}\`) but did not have permission to do so.`, {embeds:[{description: message.content}]});
@@ -44,14 +47,14 @@ module.exports = async (Discord, client, message) => {
 	core.commandLog(`:wrench: ${message.author.tag} (\`${message.author.id}\`) ran command \`${commandName}\` in the **${message.channel.name}** (\`${message.channel.id}\`) channel of **${message.guild.name}** (\`${message.guild.id}\`)`, {embeds:[{description: message.content}]});
 
 	if (command.controls.permissions) {
-		const channelPermissions = message.channel.memberPermissions(client.user.id);
+		const channelPermissions = message.channel.permissionsFor(client.user.id);
 
 		const list = channelPermissions.missing(command.controls.permissions).map(p=>permissionNames[p]);
 
 		if (list.length >= 1) {
 			if (channelPermissions.has("EMBED_LINKS")) {
 				//Can embed
-				let embed = new Discord.RichEmbed()
+				let embed = new Discord.MessageEmbed()
 					.setDescription(`This command cannot be run because some permissions are missing. ${client.user.username} needs the following permissions in the <#${message.channel.id}> channel:`)
 					.addField("Missing Elements", `<:${emoji.x}> ${list.join(`\n<:${emoji.x}> `)}`)
 					.addField("How to Fix", `In the channel settings for <#${message.channel.id}>, make sure that **${client.user.username}** has a <:${emoji.check}> for the above permissions.`)

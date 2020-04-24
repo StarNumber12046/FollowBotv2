@@ -14,18 +14,18 @@ module.exports = {
 	do: (message, client, args, Discord) => {
 		let developerArray = [];
 		developer.forEach(developerId => {
-			if (client.users.get(developerId)) {
-				let user = client.users.get(developerId);
+			if (client.users.cache.get(developerId)) {
+				let user = client.users.cache.get(developerId);
 				developerArray.push(`${user.tag} (${user.id})`);
 			} else developerArray.push(`Unknown User (${developerId})`);
 		});
-		let embed = new Discord.RichEmbed()
+		let embed = new Discord.MessageEmbed()
 			.addField("Developer", developerArray.join("\n"))
-			.addField("Guild Count", client.guilds.size)
+			.addField("Guild Count", client.guilds.cache.size)
 			.addField("Uptime", humanizeDuration(client.uptime))
-			.addField("Client Ping", client.ping + " ms")
-			.setFooter(`${client.user.tag} v1.0.1`, client.user.displayAvatarURL)
-			.setThumbnail(client.user.displayAvatarURL)
+			.addField("Client Ping", client.ws.ping + " ms")
+			.setFooter(`${client.user.tag} v1.0.1`, client.user.displayAvatarURL())
+			.setThumbnail(client.user.displayAvatarURL())
 			.setColor("BLUE");
 		message.reply("👋 Hi there! Here's some info:", embed).then((sent) => {
 			embed.addField("Edit Time", ms(new Date().getTime() - sent.createdTimestamp));

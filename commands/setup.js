@@ -13,7 +13,7 @@ module.exports = {
 		let currentSettings = await dbQueryNoNew("Origins", {channelId: message.channel.id});
 		if (currentSettings) return message.channel.send(`<:${emoji.x}> This channel is already setup as an announcement channel.`);
 		if (message.channel.nsfw) return message.channel.send(`<:${emoji.x}> NSFW channels cannot be added as announcement channels.`);
-		let channelPermMissing = channelPermissions(message.channel.memberPermissions(client.user.id), "origin");
+		let channelPermMissing = channelPermissions(message.channel.permissionsFor(client.user.id), "origin");
 		if (channelPermMissing && channelPermMissing.length >= 1) return message.channel.send(`<:${emoji.x}> This channel cannot be added as an announcement channel until the bot has the following permissions in this channel:\n- ${channelPermMissing.join("\n- ")}`);
 
 		async function randomStr(len, arr) {
@@ -36,7 +36,7 @@ module.exports = {
 			followCode: genCode
 		}).save();
 
-		let embed = new Discord.RichEmbed()
+		let embed = new Discord.MessageEmbed()
 			.setTitle(":loudspeaker: Announcement Channel Set Up")
 			.setDescription("Messages from this channel can now be published to all servers that follow this channel through FollowBot.")
 			.addField("How does following work?", `In any server with FollowBot, someone with the **Manage Server** or **Manage Webhooks** permission can use \`-follow ${genCode}\` to start receiving announcements!`)
