@@ -16,7 +16,7 @@ module.exports = {
 		let subbedChannels = await dbQueryAll("Subscription", {followedChannelId: currentSettings.channelId});
 		for (let i = 0; i < subbedChannels.length; i++) {
 			let subChannel = subbedChannels[i];
-			if (!client.channels.get(subChannel.subscribedChannelId)) await dbDeleteOne("Subscription", {
+			if (!client.channels.cache.get(subChannel.subscribedChannelId)) await dbDeleteOne("Subscription", {
 				followedChannelId: currentSettings.channelId,
 				subscribedChannelId: subChannel.subscribedChannelId
 			});

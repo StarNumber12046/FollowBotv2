@@ -15,12 +15,12 @@ module.exports = {
 		if (!origin) return message.channel.send(`<:${emoji.x}> That is an invalid follow code! Make sure that you are using the correct casing.`);
 		let alreadySubscribed = await dbQueryNoNew("Subscription", {followedChannelId: origin.channelId, subscribedChannelId: message.channel.id});
 		if (alreadySubscribed) return message.channel.send(`<:${emoji.x}> This channel is already following that channel!`);
-		let channelPermMissing = channelPermissions(message.channel.memberPermissions(client.user.id), "subscribe");
+		let channelPermMissing = channelPermissions(message.channel.permissionsFor(client.user.id), "subscribe");
 		if (channelPermMissing && channelPermMissing.length >= 1) return message.channel.send(`<:${emoji.x}> This channel cannot be added as an following channel until the bot has the following permissions in this channel:\n- ${channelPermMissing.join("\n- ")}`);
-		if (!client.guilds.get(origin.guildId) || !client.channels.get(origin.channelId)) return message.channel.send(`<:${emoji.x}> The origin announcement channel could not be fetched - please try again later.`);
-		let guild = client.guilds.get(origin.guildId);
-		let channel = client.channels.get(origin.channelId);
-		message.channel.createWebhook(`${guild.name} • #${channel.name}`, guild.iconURL ? guild.iconURL.replace(".jpg", ".png") : null).then(async webhook => {
+		if (!client.guilds.cache.get(origin.guildId) || !client.channels.cache.get(origin.channelId)) return message.channel.send(`<:${emoji.x}> The origin announcement channel could not be fetched - please try again later.`);
+		let guild = client.guilds.cache.get(origin.guildId);
+		let channel = client.channels.cache.get(origin.channelId);
+		message.channel.createWebhook(`${guild.name} • #${channel.name}`, guild.iconURL() ? guild.iconURL().replace(".jpg", ".png") : null).then(async webhook => {
 			await new Subscription({
 				subscribedGuildId: message.guild.id,
 				subscribedChannelId: message.channel.id,
