@@ -1,10 +1,12 @@
 module.exports = async (Discord, client) => {
 	const {presence} = require("../persistent");
 	const {coreLog, dbQueryAll, dbQuery} = require("../coreFunctions.js");
+	const { support_invite } = require("../config.json");
 
 	coreLog(`:ok: Logged in with ${client.guilds.size} servers!`, client);
 	console.log(`Logged in as ${client.user.tag}!`);
-	client.user.setActivity(presence.activity || "", {type: presence.type || "PLAYING"});
+	client.user.setActivity("FollowBot is being discontinued. Use -help for info", {type: "PLAYING"});
+	client.user.setStatus("dnd");
 /*
 	//Bot List Posting
 	if (release === "stable") {

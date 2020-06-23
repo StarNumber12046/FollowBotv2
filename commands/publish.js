@@ -5,7 +5,7 @@ module.exports = {
 		permission: 2,
 		usage: "publish <code> <message ID>",
 		description: "Publishes a message in an announcement channel",
-		enabled: true,
+		enabled: false,
 		permissions: ["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS", "USE_EXTERNAL_EMOJIS"]
 	},
 	do: async (message, client, args, Discord) => {

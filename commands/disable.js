@@ -6,7 +6,7 @@ module.exports = {
 		permission: 2,
 		usage: "disable",
 		description: "Disables a channel as an announcement channel",
-		enabled: true,
+		enabled: false,
 		permissions: ["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS", "USE_EXTERNAL_EMOJIS"]
 	},
 	do: async (message, client, args, Discord) => {

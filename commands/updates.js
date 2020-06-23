@@ -5,7 +5,7 @@ module.exports = {
 		usage: "updates",
 		aliases: ["joinupdates"],
 		description: "Adds/Removes the Updates role from you",
-		enabled: true,
+		enabled: false,
 		permissions: ["VIEW_CHANNEL", "SEND_MESSAGES"]
 	},
 	do: (message, client, args, Discord) => {

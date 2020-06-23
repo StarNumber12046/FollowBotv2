@@ -7,7 +7,7 @@ module.exports = {
 		usage: "stats",
 		aliases: ["statistics"],
 		description: "Shows statistics for an announcement channel",
-		enabled: true,
+		enabled: false,
 		docs: "all/stats",
 		permissions: ["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS", "USE_EXTERNAL_EMOJIS"]
 	},

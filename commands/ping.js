@@ -1,4 +1,4 @@
-const { colors, developer, version } = require("../config.json");
+const { colors, developer, support_invite } = require("../config.json");
 const humanizeDuration = require("humanize-duration");
 const ms = require("ms");
 module.exports = {
@@ -11,7 +11,8 @@ module.exports = {
 		docs: "all/ping",
 		permissions: ["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS", "USE_EXTERNAL_EMOJIS"]
 	},
-	do: (message, client, args, Discord) => {
+	do: (message, client, args, Discord, p) => {
+		if (p > 0) return message.channel.send((new Discord.RichEmbed().setTitle("Notice").setDescription(`As of June 23rd, 2020 FollowBot is being discontinued. See the [support server](https://discord.gg/${support_invite}) for more information.`).setColor("RED")));
 		let developerArray = [];
 		developer.forEach(developerId => {
 			if (client.users.get(developerId)) {

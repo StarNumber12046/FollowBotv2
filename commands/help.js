@@ -1,5 +1,5 @@
 const { checkPermissions, permLevelToRole } = require("../coreFunctions");
-const { prefix, main_guild } = require("../config.json");
+const { prefix, main_guild, support_invite } = require("../config.json");
 const { emoji } = require("../config.json");
 
 module.exports = {
@@ -13,6 +13,7 @@ module.exports = {
 		permissions: ["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS", "USE_EXTERNAL_EMOJIS"]
 	},
 	do: async (message, client, args, Discord) => {
+		return message.channel.send((new Discord.RichEmbed().setTitle("Notice").setDescription(`As of June 23rd, 2020 FollowBot is being discontinued. See the [support server](https://discord.gg/${support_invite}) for more information.`).setColor("RED")));
 		if (!args[0]) {
 			let embed = new Discord.RichEmbed()
 				.setAuthor(`${client.user.username} Help`, client.user.displayAvatarURL)

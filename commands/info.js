@@ -5,7 +5,7 @@ module.exports = {
 		permission: 2,
 		usage: "info",
 		description: "Shows information about how to follow the announcement channel",
-		enabled: true,
+		enabled: false,
 		permissions: ["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS"]
 	},
 	do: async (message, client, args, Discord) => {
